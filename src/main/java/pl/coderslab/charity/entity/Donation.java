@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,9 +18,9 @@ public class Donation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer quantity;
-    @OneToOne //??
-    private Category category;
-    @OneToOne //??
+    @ManyToMany
+    private List<Category> category;
+    @OneToOne
     private Institution institution;
     private String street;
     private String zipCode;

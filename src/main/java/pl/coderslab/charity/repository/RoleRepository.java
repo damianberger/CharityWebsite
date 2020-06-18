@@ -2,11 +2,12 @@ package pl.coderslab.charity.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.coderslab.charity.entity.Institution;
+import pl.coderslab.charity.entity.Role;
 
 import java.util.List;
 
 @Repository
-public interface InstitutionRepository extends JpaRepository<Institution, Long> {
-    List<Institution> findAll();
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role findOneByName(String roleName);
+    List<Role> findAll();
 }

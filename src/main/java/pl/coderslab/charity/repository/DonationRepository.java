@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 import pl.coderslab.charity.entity.Donation;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DonationRepository extends JpaRepository<Donation, Long> {
     List<Donation> findAll();
     @Query(value = "SELECT sum(quantity) FROM Donation ")
-    Integer bagsQuantity();
+    Optional<Integer> bagsQuantity();
 }
