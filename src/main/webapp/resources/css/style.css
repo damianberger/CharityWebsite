@@ -862,6 +862,11 @@ header.header--main-page {
     background-position: bottom left -55vh;
     background-size: 90vw;
   }
+  /*mod1*/
+  header.header--login-page {
+    background-position: bottom left -55vh;
+    background-size: 0vw;
+  }
 }
 
 /* line 15, scss/modules/_header.scss */

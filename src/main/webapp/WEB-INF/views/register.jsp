@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="<c:url value="resources/css/style.css"/>"/>
 </head>
 <body>
-<%@ include file="header.jsp" %>
+<%@ include file="header-login.jsp" %>
 
 
 <section class="login-page">
