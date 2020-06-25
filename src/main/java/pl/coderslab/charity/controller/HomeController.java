@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.charity.repository.DonationRepository;
 import pl.coderslab.charity.repository.InstitutionRepository;
 
+import java.security.Principal;
+
 
 @Controller
 public class HomeController {
@@ -20,15 +22,21 @@ public class HomeController {
     }
 
     @RequestMapping("/")
-    public String homeAction(Model model){
+    public String homeAction(Principal principal, Model model){
         model.addAttribute("donations",donationRepository.findAll().size());
         model.addAttribute("institutions",institutionRepository.findAll());
         model.addAttribute("bags",donationRepository.bagsQuantity().orElse(0));
+        if(principal != null) {
+            model.addAttribute("userEmail", principal.getName());
+        }
         return "index";
     }
 
     @GetMapping("/login")
-    public String login(){
+    public String login(Principal principal,Model model){
+        if(principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
         return "login";
     }
 }

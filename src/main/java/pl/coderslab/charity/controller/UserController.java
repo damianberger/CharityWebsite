@@ -12,6 +12,7 @@ import pl.coderslab.charity.service.RoleServiceImpl;
 import pl.coderslab.charity.service.UserServiceImpl;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,8 +27,11 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String registerPatient(Model model) {
+    public String registerPatient(Principal principal, Model model) {
         model.addAttribute("user", new User());
+        if(principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
         return "register";
     }
 

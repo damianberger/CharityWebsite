@@ -493,6 +493,13 @@ h2:after {
   padding: 0.5em 0.6em;
 }
 
+.btn--small2 {
+  font-size: 1.3rem;
+  padding: 0.5em 0.6em;
+  margin-left:auto; margin-right:0;
+}
+
+
 /* line 29, scss/modules/_buttons.scss */
 .btn--without-border {
   border: 1px solid transparent;
