@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="<c:url value="resources/css/style.css"/>"/>
 </head>
 <body>
-<%@ include file="header.jsp" %>
+<%@ include file="header-index.jsp" %>
 
 
 <section class="stats" id="stats">

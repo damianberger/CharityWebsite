@@ -173,19 +173,25 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('pickUpCommentSummary').innerHTML = document.getElementById('pickUpComment').value;
 
             let foundation = document.querySelector('[name="institution"]:checked');
-            document.getElementById('foundationSummary').innerHTML = "Na rzecz fundacji &quot" + foundation.dataset.name + "&quot";
+            if (foundation) {
+                document.getElementById('foundationSummary').innerHTML = "Na rzecz fundacji &quot" + foundation.dataset.name + "&quot";
+            }
+
 
             const quantity = document.getElementById('quantity').value;
             let categories = document.getElementsByName("categories");
-            let selectedCategories = Array.prototype.slice.call(categories).filter(ch => ch.checked==true);
+            let selectedCategories = Array.prototype.slice.call(categories).filter(ch => ch.checked == true);
             let catSum = "";
-            for (let i = 0; i < selectedCategories.length ; i++) {
+            for (let i = 0; i < selectedCategories.length; i++) {
                 catSum = catSum + selectedCategories[i].dataset.name + ", ";
             }
 
             document.getElementById('bagsSummary').innerHTML = "Worki w ilości &quot" + quantity + "&quot zawierające: " + catSum;
+
         }
     }
+
+
 
     const form = document.querySelector(".form--steps");
     if (form !== null) {

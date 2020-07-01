@@ -1,22 +1,18 @@
 package pl.coderslab.charity.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import pl.coderslab.charity.entity.Role;
+import org.springframework.web.bind.annotation.*;
+import pl.coderslab.charity.Model.CurrentUser;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.RoleServiceImpl;
 import pl.coderslab.charity.service.UserServiceImpl;
 
-import javax.validation.Valid;
-import java.security.Principal;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
     private UserServiceImpl userService;
     private RoleServiceImpl roleService;
@@ -26,23 +22,36 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/register")
-    public String registerPatient(Principal principal, Model model) {
-        model.addAttribute("user", new User());
-        if(principal != null) {
-            model.addAttribute("username", principal.getName());
+//    user data change
+
+    @GetMapping("/user-edit")
+    public String editProfile(@AuthenticationPrincipal CurrentUser currentUser, Model model){
+        if(currentUser != null) {
+            model.addAttribute("principal", userService.findCurrentUser(currentUser));
         }
-        return "register";
+        return "/user/user-data";
     }
 
-    @PostMapping("/register")
-    public String postPatient(@Valid @ModelAttribute User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "register";
+    @PostMapping("/user-edit")
+    public String editProfile(@ModelAttribute("principal") User user, @AuthenticationPrincipal CurrentUser currentUser){
+        userService.editUser(currentUser, user);
+        return "redirect:/login";
+    }
+
+//    password change
+
+    @GetMapping("/edit-pass")
+    public String changePassword(@AuthenticationPrincipal CurrentUser currentUser,Model model){
+        if(currentUser != null) {
+            model.addAttribute("principal", userService.findCurrentUser(currentUser));
         }
-        this.userService.saveUser(user);
-        Set<Role> patientRoles = new HashSet<>();
-        patientRoles.add(roleService.findOneByName("ROLE_USER"));
+        return "/user/user-password";
+    }
+
+    @PostMapping("/edit-pass")
+    public String changePassword(@ModelAttribute User user, @AuthenticationPrincipal CurrentUser currentUser){
+        userService.changePassword(currentUser, user);
+        // security context - clear
         return "redirect:/login";
     }
 

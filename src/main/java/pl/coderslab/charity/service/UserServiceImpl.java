@@ -1,7 +1,9 @@
 package pl.coderslab.charity.service;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.coderslab.charity.Model.CurrentUser;
 import pl.coderslab.charity.entity.Role;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.interfaces.UserService;
@@ -29,6 +31,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findCurrentUser(@AuthenticationPrincipal CurrentUser currentUser) {
+        return userRepository.findByEmail(currentUser.getUsername());
+    }
+
+    @Override
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(1);
@@ -51,4 +58,21 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.save(user);
     }
+
+    @Override
+    public void editUser(@AuthenticationPrincipal CurrentUser currentUser, User user) {
+        User modifyUserData = findCurrentUser(currentUser);
+        modifyUserData.setFirstName(user.getFirstName());
+        modifyUserData.setLastName(user.getLastName());
+        modifyUserData.setEmail(user.getEmail());
+        userRepository.save(modifyUserData);
+    }
+
+    @Override
+    public void changePassword(@AuthenticationPrincipal CurrentUser currentUser, User user) {
+        User modifyUserData = findCurrentUser(currentUser);
+        modifyUserData.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(modifyUserData);
+    }
+
 }

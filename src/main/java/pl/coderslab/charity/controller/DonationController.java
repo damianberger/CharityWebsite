@@ -1,10 +1,12 @@
 package pl.coderslab.charity.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import pl.coderslab.charity.Model.CurrentUser;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
@@ -32,13 +34,13 @@ public class DonationController {
     }
 
     @GetMapping("/form")
-    public String donateForm(Principal principal, Model model) {
+    public String donateForm(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("category", new Category());
         model.addAttribute("donation", new Donation());
-        if(principal != null) {
-            model.addAttribute("username", principal.getName());
+        if(currentUser != null) {
+            model.addAttribute("principal", currentUser.getUser());
         }
-        return "form";
+        return "user/form";
     }
 
     @ModelAttribute("categories")
@@ -52,16 +54,16 @@ public class DonationController {
     }
 
     @PostMapping("/form")
-    public String donateForm(@ModelAttribute Donation donation) {
+    public String postDonateForm(@ModelAttribute Donation donation) {
         donationRepository.save(donation);
-        return "redirect:/form-confirmation";
+        return "user/form-confirmation";
     }
 
     @GetMapping("/form-confirmation")
-    public String donateFormConfirm(Principal principal, Model model) {
-        if(principal != null) {
-            model.addAttribute("username", principal.getName());
+    public String donateFormConfirm(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+        if(currentUser != null) {
+            model.addAttribute("principal", currentUser.getUser());
         }
-        return "form-confirmation";
+        return "user/form-confirmation";
     }
 }
