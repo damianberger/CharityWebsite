@@ -8,7 +8,7 @@ import pl.coderslab.charity.repository.CategoryRepository;
 public class CategoryConverter implements Converter<String, Category> {
 
     @Autowired
-    public CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Override
     public Category convert(String s){

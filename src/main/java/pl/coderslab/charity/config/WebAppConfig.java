@@ -19,6 +19,7 @@ public class WebAppConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(getCategoryConverter());
     }
+
     @Bean
     public CategoryConverter getCategoryConverter() {
         return new CategoryConverter();

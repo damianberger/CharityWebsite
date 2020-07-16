@@ -1,14 +1,19 @@
 package pl.coderslab.charity.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.charity.Model.CurrentUser;
+import pl.coderslab.charity.model.CurrentUser;
 import pl.coderslab.charity.entity.User;
-import pl.coderslab.charity.service.RoleServiceImpl;
-import pl.coderslab.charity.service.UserServiceImpl;
+import pl.coderslab.charity.service.implementation.RoleServiceImpl;
+import pl.coderslab.charity.service.implementation.UserServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
@@ -33,8 +38,12 @@ public class UserController {
     }
 
     @PostMapping("/user-edit")
-    public String editProfile(@ModelAttribute("principal") User user, @AuthenticationPrincipal CurrentUser currentUser){
+    public String editProfile(@ModelAttribute("principal") User user, @AuthenticationPrincipal CurrentUser currentUser, HttpServletRequest request, HttpServletResponse response){
         userService.editUser(currentUser, user);
+        CookieClearingLogoutHandler cookieClearingLogoutHandler = new CookieClearingLogoutHandler(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY);
+        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+        cookieClearingLogoutHandler.logout(request, response, null);
+        securityContextLogoutHandler.logout(request, response, null);
         return "redirect:/login";
     }
 
@@ -49,9 +58,12 @@ public class UserController {
     }
 
     @PostMapping("/edit-pass")
-    public String changePassword(@ModelAttribute User user, @AuthenticationPrincipal CurrentUser currentUser){
+    public String changePassword(@ModelAttribute User user, @AuthenticationPrincipal CurrentUser currentUser, HttpServletRequest request, HttpServletResponse response){
         userService.changePassword(currentUser, user);
-        // security context - clear
+        CookieClearingLogoutHandler cookieClearingLogoutHandler = new CookieClearingLogoutHandler(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY);
+        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+        cookieClearingLogoutHandler.logout(request, response, null);
+        securityContextLogoutHandler.logout(request, response, null);
         return "redirect:/login";
     }
 

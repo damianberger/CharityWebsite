@@ -1,7 +1,7 @@
-package pl.coderslab.charity.interfaces;
+package pl.coderslab.charity.service;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import pl.coderslab.charity.Model.CurrentUser;
+import pl.coderslab.charity.model.CurrentUser;
 import pl.coderslab.charity.entity.User;
 
 public interface UserService {

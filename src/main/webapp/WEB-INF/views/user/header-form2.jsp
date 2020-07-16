@@ -8,15 +8,23 @@
                 <li class="logged-user">
                     Witaj  <b> <c:out value="${principal.firstName}"/> </b>
                     <ul class="dropdown">
+                        <sec:authorize access="hasRole('ROLE_USER')">
+                            <li>
+                                <a href="#">Moje zbiórki</a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+                            <li>
+                                <a href="/admin/menu">Administracja</a>
+                            </li>
+                        </sec:authorize>
                         <li>
                             <a href="/user/user-edit">Edytuj profil</a>
                         </li>
                         <li>
-                            <a href="#">Moje zbiórki</a>
-                        </li>
-                        <li>
                             <form action="<c:url value="/logout"/>" method="post">
-                                <input class="btn btn--small2 btn--without-border" id="logoutButton" type="submit" value="Wyloguj">
+                                <input class="btn btn--small2 btn--without-border" id="logoutButton" type="submit"
+                                       value="Wyloguj">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             </form>
                         </li>
@@ -27,7 +35,7 @@
         <sec:authorize access="isAnonymous()">
             <ul class="nav--actions">
                 <li><a href="login" class="btn btn--small btn--without-border">Zaloguj</a></li>
-                <li><a href="register" class="btn btn--small btn--highlighted">Załóż konto</a></li
+                <li><a href="register" class="btn btn--small btn--highlighted">Załóż konto</a></li>
             </ul>
         </sec:authorize>
 

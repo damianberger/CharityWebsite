@@ -6,7 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import pl.coderslab.charity.Model.CurrentUser;
+import org.springframework.web.bind.annotation.RequestMapping;
+import pl.coderslab.charity.model.CurrentUser;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
@@ -15,9 +16,9 @@ import pl.coderslab.charity.repository.DonationRepository;
 import pl.coderslab.charity.repository.InstitutionRepository;
 
 
-import java.security.Principal;
 import java.util.List;
 
+@RequestMapping("/form")
 @Controller
 public class DonationController {
 
@@ -33,7 +34,7 @@ public class DonationController {
 
     }
 
-    @GetMapping("/form")
+    @GetMapping("/")
     public String donateForm(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         model.addAttribute("category", new Category());
         model.addAttribute("donation", new Donation());
@@ -53,13 +54,13 @@ public class DonationController {
         return institutionRepository.findAll();
     }
 
-    @PostMapping("/form")
+    @PostMapping("/")
     public String postDonateForm(@ModelAttribute Donation donation) {
         donationRepository.save(donation);
         return "user/form-confirmation";
     }
 
-    @GetMapping("/form-confirmation")
+    @GetMapping("/confirmation")
     public String donateFormConfirm(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
         if(currentUser != null) {
             model.addAttribute("principal", currentUser.getUser());
